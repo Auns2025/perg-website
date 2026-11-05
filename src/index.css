@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  body {
+    @apply bg-white text-perg-charcoal font-sans antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading tracking-tight text-perg-charcoal;
+  }
+}
+
+/* Custom scrollbar for modern corporate aesthetic */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #075A9C;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #063B70;
+}
+
+/* Accessible focus ring */
+:focus-visible {
+  outline: 2px solid #075A9C;
+  outline-offset: 2px;
+}
+
+/* Subtle architectural grid pattern background */
+.bg-grid-pattern {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(7, 90, 156, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(7, 90, 156, 0.04) 1px, transparent 1px);
+}
+
+.bg-dot-pattern {
+  background-image: radial-gradient(rgba(7, 90, 156, 0.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
