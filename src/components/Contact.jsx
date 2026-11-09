@@ -128,15 +128,6 @@ export default function Contact() {
                     {companyInfo.registeredOffice.area}<br />
                     {companyInfo.registeredOffice.city}, {companyInfo.registeredOffice.country}
                   </p>
-                  <a
-                    href={companyInfo.registeredOffice.googleMapsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-perg-blue hover:text-perg-blue-dark mt-3 transition-colors"
-                  >
-                    <span>View Location on Google Maps</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
                 </div>
               </div>
             </div>
@@ -157,12 +148,6 @@ export default function Contact() {
                       {companyInfo.contact.primaryPhone}
                     </a>
                     <span className="text-slate-400 font-normal"> (Main Office)</span>
-                  </p>
-                  <p className="text-sm font-semibold text-slate-800 mt-1">
-                    <a href={`tel:${companyInfo.contact.mobilePhone.replace(/\s+/g, '')}`} className="hover:text-perg-blue transition-colors">
-                      {companyInfo.contact.mobilePhone}
-                    </a>
-                    <span className="text-slate-400 font-normal"> (Mobile / WhatsApp)</span>
                   </p>
                 </div>
               </div>
@@ -208,16 +193,7 @@ export default function Contact() {
             </div>
 
             {/* Dubai Trade License Badge */}
-            <div className="p-4 rounded-xl bg-perg-blue-subtle border border-perg-blue/20 text-xs text-slate-600 flex items-center justify-between">
-              <div>
-                <span className="font-bold text-perg-blue">Dubai Trade License: </span>
-                <span className="font-mono text-slate-800">{companyInfo.tradeLicenseNo}</span>
-              </div>
-              <div>
-                <span className="font-bold text-perg-blue">Chamber No: </span>
-                <span className="font-mono text-slate-800">{companyInfo.chamberOfCommerceNo}</span>
-              </div>
-            </div>
+         
           </div>
 
           {/* Right Column: Modern Inquiry Form */}

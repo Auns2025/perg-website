@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Download } from 'lucide-react';
 import { companyInfo } from '../data/companyData';
 
 export default function About() {
@@ -45,7 +44,7 @@ export default function About() {
           <div className="lg:col-span-5 relative">
             <div className="relative rounded-2xl overflow-hidden shadow-xl border border-slate-200">
               <img
-                src="/images/about-engineering.jpg"
+                src="/images/Engineers Reviewing Plans at Dubai Construction Site.jpg"
                 alt="PERG Engineering Team"
                 className="w-full h-[420px] sm:h-[500px] object-cover object-center filter contrast-[1.02]"
                 loading="lazy"
@@ -61,12 +60,8 @@ export default function About() {
                 </div>
 
                 <div className="font-heading font-bold text-base text-slate-900">
-                  PERG Technical Services LLC
+                  PERG BUILDING CONTRACTING LLC
                 </div>
-
-                <p className="text-xs text-slate-600 mt-1">
-                  Part of PERG Group • Trade License No. 815588
-                </p>
               </div>
             </div>
 
@@ -114,15 +109,24 @@ export default function About() {
               ))}
             </div>
 
-            {/* CTA */}
-            <div className="flex items-center gap-4">
+            {/* CTAs: Download Profile & Discover Expertise */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 pt-2">
+              <a
+                href="/images/PERG%20PROFILE.pdf"
+                download="PERG-Technical-Services-Company-Profile.pdf"
+                type="application/pdf"
+                className="inline-flex items-center justify-center gap-2.5 bg-perg-blue hover:bg-perg-blue-dark text-white text-sm font-semibold px-6 py-3.5 rounded-xl shadow-sm hover:shadow transition-all duration-200 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-perg-blue focus:ring-offset-2"
+              >
+                <Download className="w-4 h-4" />
+                <span>Download Company Profile</span>
+              </a>
+
               <a
                 href="#capabilities"
                 onClick={(e) => handleScrollTo(e, 'capabilities')}
-                className="inline-flex items-center gap-2 text-perg-blue font-semibold text-sm hover:text-perg-blue-dark transition-colors group"
+                className="inline-flex items-center justify-center sm:justify-start gap-2 text-slate-700 hover:text-perg-blue font-semibold text-sm transition-colors group py-2"
               >
                 <span>Discover Our Expertise</span>
-
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </a>
             </div>

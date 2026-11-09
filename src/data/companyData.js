@@ -31,8 +31,8 @@ export const companyInfo = {
     mobilePhone: "+971 55 625 7273",
     operationsPhone: "+971 4 242 4575",
     email: "sales@pergglobal.com",
-    website: "www.perglobal.com",
-    websiteUrl: "https://www.perglobal.com",
+    website: "www.pergglobal.com",
+    websiteUrl: "https://www.pergglobal.com",
     workHours: "Sunday – Thursday: 8:00 AM – 4:30 PM",
   },
 
@@ -61,7 +61,7 @@ export const companyInfo = {
   },
 
   about: {
-    intro: "PERG Technical Services LLC, a proud part of the PERG Group, was established in the UAE in 2018 to deliver specialized electromechanical and technical services across the construction, commercial real estate, and industrial sectors.",
+    intro: "PERG Technical Services LLC, a proud part of the PERG Group, was established in the UAE in 2018 to deliver specialized with building contracting, electromechanical and technical services across ADNOC Offshore & Offshore the construction, commercial real estate, and industrial sectors.",
     mission: "With a dedicated and qualified team of engineers, draftsmen, project managers, and skilled technicians, PERG specializes in complex electromechanical works demanding rigorous engineering standards, precision design, and superior execution.",
     promise: "We operate with a steadfast commitment: 'With No Compromise in Quality of Material and Work' — completing every project on time through disciplined pre-planning, proactive coordination with main contractors, and transparent communication.",
     sectorsServed: [

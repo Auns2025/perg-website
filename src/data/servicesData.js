@@ -21,7 +21,7 @@ export const coreServices = [
     title: "Electrical Contracting",
     tagline: "Turnkey low voltage distribution, robust switchgear, and mission-critical power networks",
     summary: "Specialized electrical engineering solutions for commercial towers, residential communities, industrial facilities, and petroleum service stations across the UAE.",
-    image: "/images/service-electrical.jpg",
+    image: "/images/Technician Wiring an Industrial Control Panel.jpg",
     scope: [
       "Low Voltage (LV) switchgears, Main Distribution Boards (MDB), SMDBs, and DBs",
       "Power factor correction capacitor banks and harmonic mitigation",
@@ -37,7 +37,7 @@ export const coreServices = [
     title: "Plumbing & Sanitary Systems",
     tagline: "Potable water supply, specialized drainage, booster pumping, and water treatment",
     summary: "End-to-end plumbing infrastructure engineered for reliable water delivery, hygienic discharge, acoustic attenuation, and water conservation in compliance with local utility regulations.",
-    image: "/images/service-plumbing.jpg",
+    image: "/images/Industrial Mechanical Room with Green Piping and Blue Pumps.jpg",
     scope: [
       "Potable water supply piping (PPR, PEX, Copper, Stainless Steel, HDPE SDR-11, High-Pressure PVC)",
       "Gravity and pumped drainage networks (UPVC, HDPE Low Pressure, and GRP)",
@@ -53,7 +53,7 @@ export const coreServices = [
     title: "Fire Fighting & Protection",
     tagline: "Life safety systems, clean agent suppression, automatic sprinklers, and pump rooms",
     summary: "Robust civil defense-compliant fire suppression and containment systems protecting critical industrial assets, commercial hubs, and high-density residential properties.",
-    image: "/images/service-firefighting.jpg",
+    image: "/images/Industrial Fire Pump Room.jpg",
     scope: [
       "Fire fighting pumps (Horizontal Split Case and Vertical Turbine configurations)",
       "Sprinkler networks, zone control valve stations, pressure reducing stations, and alarm check valves",
@@ -69,7 +69,7 @@ export const coreServices = [
     title: "ELV & Low Current Systems",
     tagline: "Intelligent building infrastructure, automated security, CCTV, and telecom integration",
     summary: "Future-ready Extra Low Voltage (ELV) and telecommunications frameworks delivering seamless connectivity, access control, and integrated building automation.",
-    image: "/images/service-elv.jpg",
+    image: "/images/Modern Security Control Room.jpg",
     scope: [
       "Structured cabling systems (Voice & Data Gigabit Ethernet, Fiber Optics, Server Racks)",
       "IP CCTV surveillance networks, video management servers, and intrusion detection",
@@ -77,6 +77,38 @@ export const coreServices = [
       "Public Address & Background Music (PA/BGM) and Voice Evacuation Systems",
       "Audio/Video intercom systems, IP telephony, and MATV/SMATV satellite distribution",
       "Fire alarm systems, central battery emergency lighting, and specialized gas alarm monitoring"
+    ]
+  },
+  {
+    id: "steel-structural",
+    number: "06",
+    title: "Steel Structural Work",
+    tagline: "Heavy fabrication, structural steel erection, and industrial shed construction",
+    summary: "Design, fabrication, and erection of structural steel frameworks for industrial sheds, warehouses, mezzanine floors, canopies, and heavy equipment support structures — engineered to withstand Gulf climatic and seismic loads.",
+    image: "/images/Steel Framework Under Construction.jpg",
+    scope: [
+      "Structural steel design, detailing, and shop drawing preparation (STAAD Pro / Tekla)",
+      "Fabrication of built-up sections, beams, columns, trusses, and purlins as per ASTM/AISC standards",
+      "Erection of pre-engineered buildings (PEB), industrial sheds, warehouses, and mezzanine floors",
+      "Steel canopies, walkways, staircases, handrails, and platform fabrication",
+      "Surface preparation, sand blasting, and protective painting / galvanizing as per project specs",
+      "Site welding, bolted connections, alignment, NDT testing, and structural certification"
+    ]
+  },
+  {
+    id: "container-fabrication",
+    number: "07",
+    title: "Fabrication & Modification of Containers",
+    tagline: "Custom container conversions, site offices, storage units, and modular structures",
+    summary: "Customized fabrication, modification, and conversion of ISO shipping containers into site offices, labor accommodations, portable stores, workshops, and modular utility units — complete with MEP fit-out, insulation, and finishes.",
+    image: "/images/Modular Offices Beneath the Crane.jpg",
+    scope: [
+      "Conversion of ISO containers into site offices, meeting rooms, labor accommodations, and portable stores",
+      "Cutting, welding, and structural modification of containers as per client layout requirements",
+      "Thermal insulation, internal partitioning, false ceiling, flooring, and interior fit-out works",
+      "MEP integration — electrical wiring, lighting, HVAC / AC units, plumbing, and fire safety provisions",
+      "Doors, windows, roller shutters, ramps, staircases, and external canopy fabrication",
+      "Repainting, anti-rust treatment, branding, and on-site delivery / placement of completed units"
     ]
   }
 ];
@@ -88,12 +120,12 @@ export const businessSegments = [
     subtitle: "Engineered materials & acoustic solutions",
     description: "In-house technical production delivering premium insulation, noise abatement, and specialized industrial adhesives tailored for Gulf climatic conditions.",
     items: [
-      "Industrial Adhesives & Sealants",
-      "Closed Cell Nitrile Foam Insulation Systems",
-      "Water-Based Antifungal Adhesive Coatings",
-      "Resin-Based Chemical Additives",
-      "Noise Control Systems & Acoustic Enclosures",
-      "Industrial Silencers & Vibration Isolators"
+      "Steel Structural Work",
+      "Fabrication & Modification Of Containers",
+      "Acoustic Enclosures",
+      "Industrial Silencers",
+      // "Noise Control Systems & Acoustic Enclosures",
+      // "Industrial Silencers & Vibration Isolators"
     ]
   },
   {
@@ -153,7 +185,7 @@ export const capabilities = [
     number: "02",
     title: "Project Design",
     summary: "Optimized, authority-compliant design engineering balancing performance with project budgets.",
-    details: "Our design team develops comprehensive layouts tailored to client requirements while navigating local UAE authority regulations (DEWA, Dubai Municipality, Civil Defense). We prioritize environmentally conscious designs that protect natural resources and ensure optimal lifecycle performance."
+    details: "With the support of software tools like Tekla, STAAD Pro, HVAC Design, and Eplan, our design team develops comprehensive layouts tailored to client requirements while navigating local UAE authority regulations (DEWA, Dubai Municipality, Civil Defense). We prioritize environmentally conscious designs that protect natural resources and ensure optimal lifecycle performance."
   },
   {
     id: "engineering",

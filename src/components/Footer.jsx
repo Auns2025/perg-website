@@ -53,12 +53,6 @@ export default function Footer() {
             <p className="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-sm">
               Established in Dubai in 2018. Delivering turnkey electromechanical engineering, MEP contracting, and technical facility services across the United Arab Emirates with uncompromised quality.
             </p>
-
-            <div className="text-xs text-slate-500 space-y-1 pt-2">
-              <p><span className="text-slate-400 font-medium">Trade License:</span> {companyInfo.tradeLicenseNo} (Dubai)</p>
-              <p><span className="text-slate-400 font-medium">Chamber of Commerce:</span> {companyInfo.chamberOfCommerceNo}</p>
-              <p><span className="text-slate-400 font-medium">Associate:</span> {companyInfo.groupCompany}</p>
-            </div>
           </div>
 
           {/* Quick Navigation Links */}
@@ -122,13 +116,6 @@ export default function Footer() {
                 <Phone className="w-4 h-4 text-perg-blue-bright shrink-0" />
                 <a href={`tel:${companyInfo.contact.primaryPhone.replace(/\s+/g, '')}`} className="hover:text-white transition-colors">
                   {companyInfo.contact.primaryPhone}
-                </a>
-              </div>
-
-              <div className="flex items-center gap-2.5">
-                <Phone className="w-4 h-4 text-perg-blue-bright shrink-0" />
-                <a href={`tel:${companyInfo.contact.mobilePhone.replace(/\s+/g, '')}`} className="hover:text-white transition-colors">
-                  {companyInfo.contact.mobilePhone}
                 </a>
               </div>
 
