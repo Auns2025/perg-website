@@ -1,20 +1,24 @@
-import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Clock, ArrowRight, ExternalLink, CheckCircle, AlertCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import emailjs from '@emailjs/browser';
+import { Mail, Phone, MapPin, Clock, ArrowRight, CheckCircle2, AlertCircle, X } from 'lucide-react';
 import { companyInfo } from '../data/companyData';
 
-export default function Contact() {
-  const [formData, setFormData] = useState({
-    fullName: '',
-    companyName: '',
-    email: '',
-    phone: '',
-    serviceRequired: 'HVAC Systems Contracting',
-    projectDetails: '',
-  });
+const initialFormState = {
+  fullName: '',
+  companyName: '',
+  email: '',
+  phone: '',
+  serviceRequired: 'HVAC Systems Contracting',
+  projectDetails: '',
+};
 
+export default function Contact() {
+  const [formData, setFormData] = useState(initialFormState);
   const [errors, setErrors] = useState({});
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [submissionFeedback, setSubmissionFeedback] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const servicesList = [
     'HVAC Systems Contracting',
@@ -26,6 +30,25 @@ export default function Contact() {
     'Technical Consultancy & Energy Audit',
     'Industrial Adhesives & Insulation Supply',
   ];
+
+  // Lock body scroll and attach Escape key listener when success modal is open
+  useEffect(() => {
+    if (!showSuccessModal) return;
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setShowSuccessModal(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showSuccessModal]);
 
   const validate = () => {
     const newErrors = {};
@@ -48,44 +71,119 @@ export default function Contact() {
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: null }));
     }
+    if (errorMessage) {
+      setErrorMessage(null);
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Prevent duplicate submissions while in flight
+    if (isSubmitting) return;
+
+    setErrorMessage(null);
+
+    // Validate inputs
     if (!validate()) return;
 
-    // Direct mailto handoff protocol (guarantees real handoff without fake backend)
-    const recipient = companyInfo.contact.email;
-    const subject = encodeURIComponent(`Project Inquiry: ${formData.serviceRequired} - ${formData.companyName || formData.fullName}`);
-    const body = encodeURIComponent(
-      `Dear PERG Technical Services LLC Team,\n\n` +
-      `Here are the details of our project inquiry:\n\n` +
-      `• Full Name: ${formData.fullName}\n` +
-      `• Company Name: ${formData.companyName || 'N/A'}\n` +
-      `• Email Address: ${formData.email}\n` +
-      `• Phone Number: ${formData.phone}\n` +
-      `• Service Required: ${formData.serviceRequired}\n\n` +
-      `• Project Details & Scope:\n${formData.projectDetails}\n\n` +
-      `Submitted via PERG Corporate Website Inquiry Form.`
-    );
+    setIsSubmitting(true);
 
-    const mailtoUrl = `mailto:${recipient}?subject=${subject}&body=${body}`;
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+    const directEndpoint = import.meta.env.VITE_EMAIL_ENDPOINT || 'https://formsubmit.co/ajax/sales@pergglobal.com';
 
+    // 1. If EmailJS credentials are fully provided, deliver via EmailJS
+    if (serviceId && templateId && publicKey) {
+      const templateParams = {
+        fullName: formData.fullName.trim(),
+        companyName: formData.companyName.trim() || 'N/A',
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        serviceRequired: formData.serviceRequired,
+        projectDetails: formData.projectDetails.trim(),
+        name: formData.fullName.trim(),
+        from_name: formData.fullName.trim(),
+        user_name: formData.fullName.trim(),
+        reply_to: formData.email.trim(),
+        from_email: formData.email.trim(),
+        user_email: formData.email.trim(),
+        user_phone: formData.phone.trim(),
+        company: formData.companyName.trim() || 'N/A',
+        company_name: formData.companyName.trim() || 'N/A',
+        service: formData.serviceRequired,
+        service_required: formData.serviceRequired,
+        message: formData.projectDetails.trim(),
+        to_email: 'sales@pergglobal.com',
+        recipient_email: 'sales@pergglobal.com',
+        subject: `Project Inquiry: ${formData.serviceRequired} - ${formData.companyName.trim() || formData.fullName.trim()}`,
+      };
+
+      try {
+        const response = await emailjs.send(serviceId, templateId, templateParams, {
+          publicKey: publicKey,
+        });
+
+        if (response.status === 200 || response.text === 'OK') {
+          // Reset form only after delivery confirmed
+          setFormData(initialFormState);
+          setErrors({});
+          setErrorMessage(null);
+          setShowSuccessModal(true);
+        } else {
+          throw new Error(`EmailJS returned status ${response.status}: ${response.text}`);
+        }
+      } catch (err) {
+        console.error('[EmailJS Send Error]:', err);
+        setErrorMessage('Something went wrong. Please try again.');
+      } finally {
+        setIsSubmitting(false);
+      }
+      return;
+    }
+
+    // 2. Direct Delivery via FormSubmit AJAX (Standard Web API - sends activation link on first submission)
     try {
-      // Trigger user's email client
-      window.location.href = mailtoUrl;
+      const payload = {
+        "Full Name": formData.fullName.trim(),
+        "Company": formData.companyName.trim() || 'N/A',
+        "Email Address": formData.email.trim(),
+        "Phone Number": formData.phone.trim(),
+        "Service Required": formData.serviceRequired,
+        "Project Scope": formData.projectDetails.trim(),
+        "_subject": `New Project Inquiry: ${formData.serviceRequired} - ${formData.companyName.trim() || formData.fullName.trim()}`,
+        "_replyto": formData.email.trim(),
+        "_template": "table",
+        "_captcha": "false"
+      };
 
-      // Provide clear, honest client feedback explaining the handoff
-      setIsSubmitted(true);
-      setSubmissionFeedback({
-        type: 'success',
-        message: `Your inquiry has been prepared for dispatch to ${recipient}. If your default mail application didn't open automatically, please send your email directly using the link below.`
+      const response = await fetch(directEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
       });
+
+      const result = await response.json().catch(() => ({}));
+
+      if (response.ok && (result.success === 'true' || result.success === true || result.message)) {
+        // Reset form only after delivery confirmed
+        setFormData(initialFormState);
+        setErrors({});
+        setErrorMessage(null);
+        setShowSuccessModal(true);
+      } else {
+        throw new Error(result.message || `Delivery responded with status ${response.status}`);
+      }
     } catch (err) {
-      setSubmissionFeedback({
-        type: 'info',
-        message: `Please email your details directly to ${recipient}.`
-      });
+      console.error('[Contact Form Delivery Error]:', err);
+      // Preserve form data on failure
+      setErrorMessage('Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -192,8 +290,6 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* Dubai Trade License Badge */}
-         
           </div>
 
           {/* Right Column: Modern Inquiry Form */}
@@ -206,18 +302,21 @@ export default function Contact() {
                 Please complete the form below. Your request will be directly structured for our commercial engineering team.
               </p>
 
-              {submissionFeedback && (
-                <div className="mb-6 p-4 rounded-xl bg-blue-50 border border-blue-200 text-sm text-blue-900 flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-perg-blue shrink-0 mt-0.5" />
-                  <div className="space-y-1">
-                    <p className="font-semibold">{submissionFeedback.message}</p>
-                    <a
-                      href={`mailto:${companyInfo.contact.email}?subject=Project%20Inquiry%20-%20${formData.serviceRequired}&body=Full%20Name:%20${encodeURIComponent(formData.fullName)}%0D%0ACompany:%20${encodeURIComponent(formData.companyName)}%0D%0APhone:%20${encodeURIComponent(formData.phone)}%0D%0ADetails:%20${encodeURIComponent(formData.projectDetails)}`}
-                      className="text-xs font-bold text-perg-blue underline"
-                    >
-                      Click here to re-open email draft directly
-                    </a>
+              {/* Error Message Box */}
+              {errorMessage && (
+                <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-sm text-red-700 flex items-start gap-3 animate-fade-in">
+                  <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                  <div className="flex-1">
+                    <p className="font-semibold text-red-800">{errorMessage}</p>
                   </div>
+                  <button
+                    type="button"
+                    onClick={() => setErrorMessage(null)}
+                    className="text-red-400 hover:text-red-700 text-xs font-bold transition-colors"
+                    aria-label="Dismiss error"
+                  >
+                    ✕
+                  </button>
                 </div>
               )}
 
@@ -370,13 +469,23 @@ export default function Contact() {
                   )}
                 </div>
 
-                {/* Submit Button */}
+                {/* Submit Button with Loading & Duplicate Submission Prevention */}
                 <button
                   type="submit"
-                  className="w-full inline-flex items-center justify-center gap-2 bg-perg-blue hover:bg-perg-blue-dark text-white text-base font-bold py-4 rounded-xl shadow-md transition-all duration-200 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-perg-blue focus:ring-offset-2"
+                  disabled={isSubmitting}
+                  className="w-full inline-flex items-center justify-center gap-2 bg-perg-blue hover:bg-perg-blue-dark disabled:bg-slate-400 disabled:cursor-not-allowed text-white text-base font-bold py-4 rounded-xl shadow-md transition-all duration-200 transform hover:-translate-y-0.5 disabled:hover:translate-y-0 focus:outline-none focus:ring-2 focus:ring-perg-blue focus:ring-offset-2"
                 >
-                  <span>Send Inquiry</span>
-                  <ArrowRight className="w-5 h-5" />
+                  {isSubmitting ? (
+                    <>
+                      <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <span>Sending Inquiry...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Send Inquiry</span>
+                      <ArrowRight className="w-5 h-5" />
+                    </>
+                  )}
                 </button>
 
                 <p className="text-[11px] text-slate-500 text-center">
@@ -387,6 +496,61 @@ export default function Contact() {
           </div>
         </div>
       </div>
+
+      {/* SUCCESS CONFIRMATION MODAL (Mounted via Portal) */}
+      {showSuccessModal && typeof document !== 'undefined' && createPortal(
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-fade-in"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Submission Successful"
+        >
+          {/* Backdrop click to close */}
+          <div
+            className="absolute inset-0 cursor-pointer"
+            onClick={() => setShowSuccessModal(false)}
+            aria-label="Close modal overlay"
+          />
+
+          {/* Modal Card */}
+          <div className="relative w-full max-w-md bg-white rounded-2xl sm:rounded-3xl border border-slate-200 shadow-2xl p-6 sm:p-8 text-center z-10 transform transition-all">
+            {/* Top Right Close Button */}
+            <button
+              type="button"
+              onClick={() => setShowSuccessModal(false)}
+              aria-label="Close popup"
+              className="absolute top-4 right-4 p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Success Icon */}
+            <div className="w-16 h-16 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center mx-auto mb-5 text-emerald-600 shadow-sm">
+              <CheckCircle2 className="w-8 h-8" />
+            </div>
+
+            {/* Exact Required Heading */}
+            <h3 className="font-heading font-extrabold text-2xl text-slate-900 mb-2">
+              Thank You!
+            </h3>
+
+            {/* Exact Required Message */}
+            <p className="text-sm text-slate-600 leading-relaxed mb-6">
+              Your form has been submitted successfully. Our team will contact you shortly.
+            </p>
+
+            {/* OK Button */}
+            <button
+              type="button"
+              onClick={() => setShowSuccessModal(false)}
+              className="w-full inline-flex items-center justify-center gap-2 bg-perg-blue hover:bg-perg-blue-dark text-white font-bold py-3.5 px-6 rounded-xl shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-perg-blue focus:ring-offset-2"
+            >
+              <span>OK</span>
+            </button>
+          </div>
+        </div>,
+        document.body
+      )}
     </section>
   );
 }

@@ -112,16 +112,6 @@ export default function About() {
             {/* CTAs: Download Profile & Discover Expertise */}
             <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 pt-2">
               <a
-                href="/images/PERG%20PROFILE.pdf"
-                download="PERG-Technical-Services-Company-Profile.pdf"
-                type="application/pdf"
-                className="inline-flex items-center justify-center gap-2.5 bg-perg-blue hover:bg-perg-blue-dark text-white text-sm font-semibold px-6 py-3.5 rounded-xl shadow-sm hover:shadow transition-all duration-200 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-perg-blue focus:ring-offset-2"
-              >
-                <Download className="w-4 h-4" />
-                <span>Download Company Profile</span>
-              </a>
-
-              <a
                 href="#capabilities"
                 onClick={(e) => handleScrollTo(e, 'capabilities')}
                 className="inline-flex items-center justify-center sm:justify-start gap-2 text-slate-700 hover:text-perg-blue font-semibold text-sm transition-colors group py-2"

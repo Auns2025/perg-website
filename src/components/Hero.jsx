@@ -162,7 +162,7 @@ export default function Hero() {
       id: 'slide-02',
       image: '/images/Hero-slider-2.jpg',
       alt: 'Electrical Engineering Solutions, Switchgear and Industrial Power Systems',
-      eyebrow: 'ELECTRICAL CONTRACTING & POWER SYSTEMS',
+      eyebrow: 'PERG BUILDING CONTRACTING LLC',
       location: 'Dubai, UAE',
       titleLine1: 'Powering Progress with',
       titleHighlight: 'Expert Electrical Solutions',
